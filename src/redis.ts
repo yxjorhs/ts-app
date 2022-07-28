@@ -3,7 +3,7 @@ import * as config from './config';
 
 let redis: IORedis.Redis | IORedis.Cluster;
 
-export function init() {
+function init() {
   const c = config.get();
 
   const redisOptions: IORedis.RedisOptions = {
@@ -17,6 +17,8 @@ export function init() {
 }
 
 export function get() {
+  if (redis === undefined) init();
+
   return redis;
 }
 

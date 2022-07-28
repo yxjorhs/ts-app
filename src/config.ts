@@ -4,8 +4,6 @@ import lodash from 'lodash';
 const defaultConf = {
   /** 是否开启socket服务 */
   APP_SOCKET_SERVER_ENABLE: false,
-  /** 是否开启redis */
-  APP_REDIS_ENABLE: false,
   /** 日志等级, 具体查看pino.Level */
   LOGGER_LEVEL: 'debug',
   /** 日志输出位置 */
@@ -28,11 +26,10 @@ const defaultConf = {
 
 let conf: typeof defaultConf;
 
-export function init() {
+function init() {
   const jsonPath = __dirname + '/../conf/app.json';
   const jsonConf = JSON.parse(fs.readFileSync(jsonPath).toString());
   conf = lodash.merge(defaultConf, jsonConf);
-  return conf;
 }
 
 /**
@@ -40,6 +37,7 @@ export function init() {
  * @return 配置
  */
 export function get() {
+  if (conf === undefined) init();
   return conf;
 }
 

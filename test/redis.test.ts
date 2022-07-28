@@ -1,13 +1,9 @@
 import assert from 'assert';
-import * as config from '../src/config';
 import * as redis from '../src/redis';
 
 describe('redis', () => {
-  config.init()
-  redis.init()
-  const rds = redis.get()
-
   it('default', async () => {
+    const rds = redis.get()
     const key = 'a'
     const value = 'hello world'
     await rds.set(key, value)

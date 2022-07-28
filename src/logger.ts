@@ -4,7 +4,7 @@ import * as config from './config';
 
 let logger: pino.Logger;
 
-export function init() {
+function init() {
   const c = config.get();
   const outputStream = c.LOGGER_OUT === 'stdout' ?
     process.stdout :
@@ -16,6 +16,8 @@ export function init() {
 }
 
 export function print(level: pino.Level, msg: string | object) {
+  if (logger === undefined) init();
+
   const data = typeof msg === 'string' ? { msg } : msg;
   logger[level](data);
 }
