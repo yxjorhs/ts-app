@@ -2,22 +2,21 @@ import pino from 'pino';
 import fs from 'fs';
 import * as config from './config';
 
-const {
-  LOGGER_LEVEL,
-  LOGGER_OUT,
-  LOGGER_OUT_FILE_PATH
-} = config.get()
+let logger: pino.Logger;
 
-const outputStream = LOGGER_OUT === 'stdout'
-  ? process.stdout
-  : fs.createWriteStream(LOGGER_OUT_FILE_PATH)
+export function init() {
+  const c = config.get();
+  const outputStream = c.LOGGER_OUT === 'stdout' ?
+    process.stdout :
+    fs.createWriteStream(c.LOGGER_OUT_FILE_PATH);
 
-const logger = pino({
-  level: LOGGER_LEVEL,
-}, outputStream)
+  logger = pino({
+    level: c.LOGGER_LEVEL,
+  }, outputStream);
+}
 
 export function print(level: pino.Level, msg: string | object) {
-  const data = typeof msg === 'string' ? { msg } : msg
-  logger[level](data)
+  const data = typeof msg === 'string' ? { msg } : msg;
+  logger[level](data);
 }
 

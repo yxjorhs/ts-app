@@ -3,7 +3,8 @@ import { WebSocketServer, WebSocket } from 'ws';
 import * as socketRouter from './socket-router';
 
 export async function listen() {
-  const wss = new WebSocketServer({ port: config.get().SOCKET_SERVER_PORT });
+  const c = config.get();
+  const wss = new WebSocketServer({ port: c.SOCKET_SERVER_PORT });
 
   wss.on('connection', function(ws) {
     ws.on('message', (raw) => socketRouter.handleMsg(raw, wss, ws));
